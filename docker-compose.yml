@@ -241,10 +241,12 @@ services:
     image: eclipse-mosquitto:latest
     hostname: mosquitto
     container_name: mosquitto
-    expose:
-      - "1883"
+    restart: unless-stopped
     ports:
       - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
 
   mongo:
     image: mongo
