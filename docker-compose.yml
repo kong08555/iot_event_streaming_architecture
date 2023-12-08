@@ -231,7 +231,7 @@ services:
     container_name: mongo
     env_file:
       - .env
-    restart: always
+    restart: unless-stopped
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
@@ -243,7 +243,7 @@ services:
     container_name: mongo-express
     env_file:
       - .env
-    restart: always
+    restart: unless-stopped
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
