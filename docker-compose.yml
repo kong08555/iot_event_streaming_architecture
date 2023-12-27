@@ -38,6 +38,7 @@ services:
     container_name: kafka
     volumes:
       - kafka-data:/var/lib/kafka
+    restart: unless-stopped
     environment:
       # Required. Instructs Kafka how to get in touch with ZooKeeper.
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -83,31 +84,33 @@ services:
     # Kafka REST relies upon Kafka, ZooKeeper
     # This will instruct docker to wait until those services are up
     # before attempting to start Kafka REST.
+    restart: unless-stopped
     ports:
       - "9999:8082"
     depends_on:
       - zookeeper
       - kafka
 
-  # Browse Kafka topics and understand what's happening on your cluster.
-  # Find topics / view topic metadata / browse topic data
-  # (kafka messages) / view topic configuration / download data.
-  # https://github.com/Landoop/kafka-topics-ui
-  kafka-topics-ui:
-    image: landoop/kafka-topics-ui:latest
-    container_name: kafka-topics-ui
-    ports:
-      - "8081:8000"
-    environment:
-      # Required. Instructs the UI where it can find the Kafka REST Proxy.
-      KAFKA_REST_PROXY_URL: "http://kafka-rest-proxy:8082/"
-      # This instructs the docker image to use Caddy to proxy traffic to kafka-topics-ui.
-      PROXY: "true"
-    # kafka-topics-ui relies upon Kafka REST.
-    # This will instruct docker to wait until those services are up
-    # before attempting to start kafka-topics-ui.
-    depends_on:
-      - kafka-rest-proxy
+  # # Browse Kafka topics and understand what's happening on your cluster.
+  # # Find topics / view topic metadata / browse topic data
+  # # (kafka messages) / view topic configuration / download data.
+  # # https://github.com/Landoop/kafka-topics-ui
+  # kafka-topics-ui:
+  #   image: landoop/kafka-topics-ui:latest
+  #   container_name: kafka-topics-ui
+  #   platform: linux/amd64
+  #   ports:
+  #     - "8081:8000"
+  #   environment:
+  #     # Required. Instructs the UI where it can find the Kafka REST Proxy.
+  #     KAFKA_REST_PROXY_URL: "http://kafka-rest-proxy:8082/"
+  #     # This instructs the docker image to use Caddy to proxy traffic to kafka-topics-ui.
+  #     PROXY: "true"
+  #   # kafka-topics-ui relies upon Kafka REST.
+  #   # This will instruct docker to wait until those services are up
+  #   # before attempting to start kafka-topics-ui.
+  #   depends_on:
+  #     - kafka-rest-proxy
 
   # Kafka Connect, an open source component of Apache Kafka,
   # is a framework for connecting Kafka with external systems
@@ -149,6 +152,7 @@ services:
       #Connectos path
       CONNECT_PLUGIN_PATH: "/usr/share/java,/data/connectors/"
       CONNECT_LOG4J_ROOT_LOGLEVEL: "INFO"
+    restart: unless-stopped
     volumes:
       - ./kafka_connect/data:/data
     command: 
@@ -178,25 +182,25 @@ services:
       - zookeeper
       - kafka
 
-  # This is a web tool for Kafka Connect for setting up and managing connectors for multiple connect clusters.
-  # https://github.com/Landoop/kafka-connect-ui
-  kafka-connect-ui:
-    image: landoop/kafka-connect-ui:latest
-    container_name: kafka-connect-ui
-    # kafka-connect-ui binds to port 8000, but we are going to expose it on our local
-    # machine on port 8002.
-    ports:
-      - "8082:8000"
-    environment:
-      # Required. Instructs the UI where it can find Kafka Connect.
-      CONNECT_URL: "http://kafka-connect:8083/"
-      # This instructs the docker image to use Caddy to proxy traffic to kafka-connect-ui.
-      PROXY: "true"
-    # kafka-connect-ui relies upon Kafka Connect.
-    # This will instruct docker to wait until those services are up
-    # before attempting to start kafka-connect-ui.
-    depends_on:
-      - kafka-connect
+  # # This is a web tool for Kafka Connect for setting up and managing connectors for multiple connect clusters.
+  # # https://github.com/Landoop/kafka-connect-ui
+  # kafka-connect-ui:
+  #   image: landoop/kafka-connect-ui:latest
+  #   container_name: kafka-connect-ui
+  #   # kafka-connect-ui binds to port 8000, but we are going to expose it on our local
+  #   # machine on port 8002.
+  #   ports:
+  #     - "8082:8000"
+  #   environment:
+  #     # Required. Instructs the UI where it can find Kafka Connect.
+  #     CONNECT_URL: "http://kafka-connect:8083/"
+  #     # This instructs the docker image to use Caddy to proxy traffic to kafka-connect-ui.
+  #     PROXY: "true"
+  #   # kafka-connect-ui relies upon Kafka Connect.
+  #   # This will instruct docker to wait until those services are up
+  #   # before attempting to start kafka-connect-ui.
+  #   depends_on:
+  #     - kafka-connect
 
   # Web client for ZooNavigator, web-based browser & editor for ZooKeeper.
   # https://github.com/elkozmon/zoonavigator
