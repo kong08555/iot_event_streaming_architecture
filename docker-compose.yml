@@ -266,11 +266,14 @@ services:
   # Grafana is a multi-platform open source analytics and interactive visualization web application. 
   # It provides charts, graphs, and alerts for the web when connected to supported data sources. 
   # It is expandable through a plug-in system. End users can create complex monitoring dashboards using interactive query builders.
+  # https://github.com/hanattaw/grafana-flowcharting
+  # from link above, some fixed for plugin flowcharting. You need to manually install plugin.
   grafana:
     image: grafana/grafana:latest-ubuntu
     container_name: grafana
+    user: '0'
     volumes:
-      - grafana_data:/var/lib/grafana
+      - ./grafana/data:/var/lib/grafana
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/datasources:/etc/grafana/provisioning/datasources
     environment:
@@ -337,7 +340,7 @@ services:
     restart: unless-stopped
 
  
-  # IoT Sensor 1
+  # # IoT Sensor 1
   iot_sensor_1:
     image: ssanchez11/iot_sensor:0.0.1-SNAPSHOT
     container_name: iot_sensor_1
@@ -346,6 +349,26 @@ services:
       - sensor.id=${IOT_SENSOR_1_ID}
       - sensor.name=${IOT_SENSOR_1_NAME}
       - sensor.place.id=${IOT_SENSOR_1_PLACE_ID}
+
+  # # # # IoT Sensor 2
+  # iot_sensor_2:
+  #   image: ssanchez11/iot_sensor:0.0.1-SNAPSHOT
+  #   container_name: iot_sensor_2
+  #   restart: unless-stopped
+  #   environment:
+  #     - sensor.id=${IOT_SENSOR_2_ID}
+  #     - sensor.name=${IOT_SENSOR_2_NAME}
+  #     - sensor.place.id=${IOT_SENSOR_2_PLACE_ID}
+  # # # # IoT Sensor 1
+
+  # iot_sensor_3:
+  #   image: ssanchez11/iot_sensor:0.0.1-SNAPSHOT
+  #   container_name: iot_sensor_3
+  #   restart: unless-stopped
+  #   environment:
+  #     - sensor.id=${IOT_SENSOR_3_ID}
+  #     - sensor.name=${IOT_SENSOR_3_NAME}
+  #     - sensor.place.id=${IOT_SENSOR_3_PLACE_ID}
 
   # IoT Processor
   iot-processor:
@@ -361,5 +384,18 @@ services:
     restart: unless-stopped
     ports:
       - '9091:9091'
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 18080:8080
+    depends_on:
+      - kafka
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: wizard_test
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      
       
       
