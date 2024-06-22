@@ -84,3 +84,31 @@ To stop this behavior, use disable instead.
 sudo systemctl disable docker.service
 sudo systemctl disable containerd.service
 ```
+
+
+# Docker, Starting from the ground
+
+Stop all container
+```
+docker stop $(docker ps -aq)
+```
+
+Delete all containers
+```
+docker container rm -f $(docker container ls -aq)
+```
+
+Delete all volumes
+```
+docker volume rm -f $(docker volume ls -q)
+```
+
+Delete network
+```
+docker network rm -f $(docker network ls -q)
+```
+
+Delete images
+```
+docker image rm -f $(docker image ls -q)
+```
