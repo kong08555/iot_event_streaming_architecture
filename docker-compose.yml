@@ -328,17 +328,17 @@ services:
   #   ports:
   #     - '9100:9100'
 
-  # Kafka exporter for Prometheus
-  kafka-exporter:
-    image: bitnami/kafka-exporter:latest
-    container_name: kafka-exporter
-    hostname: kafka-exporter
-    command:
-      - '--kafka.server=kafka:9092'
-      - '--web.listen-address=kafka-exporter:9308'
-      - '--web.telemetry-path=/metrics'
-      - '--log.level=debug'
-    restart: unless-stopped
+  # # Kafka exporter for Prometheus
+  # kafka-exporter:
+  #   image: bitnami/kafka-exporter:latest
+  #   container_name: kafka-exporter
+  #   hostname: kafka-exporter
+  #   command:
+  #     - '--kafka.server=kafka:9092'
+  #     - '--web.listen-address=kafka-exporter:9308'
+  #     - '--web.telemetry-path=/metrics'
+  #     - '--log.level=debug'
+  #   restart: unless-stopped
 
  
   # # IoT Sensor 1
