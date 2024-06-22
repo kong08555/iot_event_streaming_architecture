@@ -25,7 +25,7 @@ services:
       - zookeeper-log:/var/lib/zookeeper/log
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_SNAP_COUNT: 5
+      # ZOOKEEPER_SNAP_COUNT: 5
       ZOOKEEPER_AUTOPURGE_SNAP_RETAIN_COUNT: 5
       ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: 2
 
