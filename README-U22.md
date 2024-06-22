@@ -112,3 +112,8 @@ Delete images
 ```
 docker image rm -f $(docker image ls -q)
 ```
+
+
+# Control startup and shutdown order in Compose
+
+https://docs.docker.com/compose/startup-order/

@@ -350,6 +350,10 @@ services:
       - sensor.id=${IOT_SENSOR_1_ID}
       - sensor.name=${IOT_SENSOR_1_NAME}
       - sensor.place.id=${IOT_SENSOR_1_PLACE_ID}
+    depends_on:
+      iot-processor:
+        condition: service_started
+        restart: true
 
   # # # # IoT Sensor 2
   # iot_sensor_2:
@@ -378,6 +382,10 @@ services:
     restart: unless-stopped
     ports:
       - '8080:8080'
+    depends_on:
+      kafka-connect:
+        condition: service_started
+        restart: true
       
   # pushgateway:
   #   image: prom/pushgateway:v0.8.0
