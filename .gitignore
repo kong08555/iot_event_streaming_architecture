@@ -35,3 +35,10 @@ build/
 
 ### MAC .DS_Store
 .DS_Store
+
+# mosquitto
+mosquitto/log
+mosquitto/data
+
+# grafana data
+grafana/data
